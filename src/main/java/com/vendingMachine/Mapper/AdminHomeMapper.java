@@ -1,4 +1,4 @@
-package com.vendingMachine.admin.Mapper;
+package com.vendingMachine.Mapper;
 
 import java.util.List;
 

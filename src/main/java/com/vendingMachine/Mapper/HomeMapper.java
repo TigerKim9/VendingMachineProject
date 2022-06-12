@@ -13,7 +13,9 @@ public interface HomeMapper {
 	//마이페이지
 	User myPage(long userId);
 	
+	//회원정보 변경
 	int changeUserInfo(User user);
 	
+	//비밀번호 확인용 비밀번호 불러오기
 	String encodedPw(Long userId);
 }
