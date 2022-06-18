@@ -13,4 +13,7 @@ public interface ProductStockMapper {
 	
 	//상품 판매시 재고 감소
 	int sellProductStock(long productId);
+
+	//상품 폐기시 재고 감소
+
 }
