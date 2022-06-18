@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProducStock {
+public class ProductStock {
 
 	//제품 id
 	private Long productId;

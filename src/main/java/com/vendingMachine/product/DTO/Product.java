@@ -24,6 +24,12 @@ public class Product {
 	//제품 제조회사
 	private String productCompanyId;
 	
+	//제품 매입단가
+	private String productPurchasePrice;
+	
+	//제품 판매단가
+	private String productSellPrice;
+	
 	//제품 등록 날짜
 	private LocalDateTime productRegDate;
 	
