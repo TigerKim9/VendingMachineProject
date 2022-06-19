@@ -7,25 +7,25 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductStock {
+public class SellProductHistory {
 
+	//자판기 id
+	private Long vendingMachineId;
+	
 	//제품 id
 	private Long productId;
 	
-	//제품 재고변화량
-	private int productChangeQuantity;
-	
-	//제품 재고
+	//제품 판매 수
 	private int productQuantity;
 	
-	//재고 변화 날짜
+	//상품 판매 날짜
 	private LocalDateTime quantityChangeTime;
 	
 	/*
 	 * 재고 변화 종류 
 	 * 
-	 * 0 : 상품재고추가 (+)
-	 * 1 : 판매 (-) 
+	 * 0 : 판매 (-) 
+	 * 1 : 상품재고추가 (+)
 	 * 2 : 폐기 (-)
 	 *
 	 */

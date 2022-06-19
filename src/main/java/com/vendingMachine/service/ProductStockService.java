@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.vendingMachine.Mapper.ProductStockMapper;
 import com.vendingMachine.product.DTO.Product;
+import com.vendingMachine.product.DTO.ProductStock;
 
 @Service
 public class ProductStockService {
@@ -20,8 +21,10 @@ public class ProductStockService {
 	}
 	
 	//상품 판매시 재고 감소 + 매출금액 산정
-	public int sellProductStock(long productId) {
-		int result = productStockMapper.sellProductStock(productId);
+	public int sellProductStock(ProductStock productStock) {
+		int result = productStockMapper.sellProductStock(productStock);
+		productStockMapper.increaseRevenue(productStock);
+		
 		return result;
 	}
 	
