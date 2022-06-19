@@ -15,5 +15,5 @@ public interface ProductStockMapper {
 	int sellProductStock(long productId);
 
 	//상품 폐기시 재고 감소
-
+	int trashProductStock(long productId);
 }
