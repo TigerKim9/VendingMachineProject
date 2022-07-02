@@ -30,4 +30,7 @@ public class ProductStockService {
 	
 
 	//상품 폐기시 재고 감소 + 총 상품금액 계산
+	public int disposalProductStock(long productId) {
+		return productStockMapper.disposalProductStock(productId);
+	}
 }
