@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+//유저 Entity
 @Getter
 @Setter
 @ToString

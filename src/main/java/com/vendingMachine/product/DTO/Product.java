@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+//상품 Entity
 @Getter
 @Setter
 public class Product {

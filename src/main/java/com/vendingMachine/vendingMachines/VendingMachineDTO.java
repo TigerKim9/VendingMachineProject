@@ -1,12 +1,16 @@
 package com.vendingMachine.vendingMachines;
 
+import java.util.List;
+
+import com.vendingMachine.product.DTO.Product;
+
 import lombok.Getter;
 import lombok.Setter;
 
 //자판기 Entity
 @Getter
 @Setter
-public class VendingMachine {
+public class VendingMachineDTO {
 
 	//자판기 고유 아이디
 	private long vendingMachineId;
@@ -23,4 +27,5 @@ public class VendingMachine {
 	//자판기 상품 칸 수
 	private short vendingMachineSlot;
 	
+	private List<Product> vendingMachinesProduct;
 }

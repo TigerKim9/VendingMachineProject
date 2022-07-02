@@ -16,7 +16,7 @@ public class CategoryDTO {
 	private String CategoryName;
 	
 	//카테고리에 속한 제품목록
-	private List<Product> producctInCategory;
+	private List<Product> productInCategory;
 	
 	
 }

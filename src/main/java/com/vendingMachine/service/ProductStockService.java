@@ -8,16 +8,19 @@ import com.vendingMachine.Mapper.ProductStockMapper;
 import com.vendingMachine.product.DTO.Product;
 import com.vendingMachine.product.DTO.ProductStock;
 
+//상품 재고변화 기록 서비스단
 @Service
 public class ProductStockService {
 
 	@Resource
 	ProductStockMapper productStockMapper;
 	
+	
+	
 	//상품 재고 추가
 	public int addProductStock(Product product) {
-		int result = productStockMapper.addProductStock(product);
-		return result;
+		return productStockMapper.addProductStock(product);
+		
 	}
 	
 	//상품 판매시 재고 감소 + 매출금액 산정
