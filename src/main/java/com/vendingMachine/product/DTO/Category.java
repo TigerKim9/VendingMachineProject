@@ -3,6 +3,7 @@ package com.vendingMachine.product.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+//카테고리 Entity
 @Getter
 @Setter
 public class Category {

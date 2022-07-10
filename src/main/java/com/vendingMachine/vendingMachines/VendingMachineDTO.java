@@ -7,7 +7,7 @@ import com.vendingMachine.product.DTO.Product;
 import lombok.Getter;
 import lombok.Setter;
 
-//자판기 Entity
+//자판기 DTO
 @Getter
 @Setter
 public class VendingMachineDTO {

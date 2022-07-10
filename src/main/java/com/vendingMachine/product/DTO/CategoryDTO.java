@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+//카테고리 DTO
 @Getter
 @Setter
 public class CategoryDTO {
