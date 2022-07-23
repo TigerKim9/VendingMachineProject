@@ -30,6 +30,8 @@ public class User {
 	//회원 전화번호
 	private String userPhone;
 	
+	private String userGender;
+	
 	//본인인증 여부
 	private boolean kyc;
 }

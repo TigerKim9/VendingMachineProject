@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	<mapper namespace="com.vendingMachine.Mapper.UserMapper">
+
+  	<select id="idCheck" resultType="int">
+		SELECT
+			COUNT(user_pid)
+  		FROM user
+  		WHERE user_id = #{userId} 	
+	</select>
+  		
+  		
+  		
+  		<insert id="addUser" parameterType="com.vendingMachine.home.DTO.User">
+		INSERT INTO test_member(mb_id, mb_pw, mb_email)
+		VALUES(#{id}, #{pw}, #{email})
+	</insert>
+	
+	<insert id="addAuth">
+		INSERT INTO test_authority
+		VALUES(#{param1}, #{param2})
+	</insert>
+
+	<delete id="deleteUser" parameterType="com.vendingMachine.home.DTO.User">
+		DELETE FROM test_member
+		WHERE mb_id = #{id}
+	</delete>	
+	
+	<delete id="deleteAuth">
+		DELETE FROM test_authority
+		WHERE mb_id = #{param1} AND mb_auth = #{param2}
+	</delete>
+
+	<delete id="deleteAuths">
+		DELETE FROM test_authority
+		WHERE mb_id = #{param1}
+	</delete>
+
+	<select id="findById" resultType="com.vendingMachine.home.DTO.User">
+		SELECT
+			mb_uid uid,
+			mb_id id,
+			mb_pw pw,
+			mb_email email,
+			mb_enabled enabled,
+			mb_regdate regdate
+		FROM test_member
+		WHERE mb_id = #{id}	
+	</select>
+
+	<select id="selectAuthoritiesById" resultType="String">
+		SELECT mb_auth
+		FROM test_authority
+		WHERE mb_id = #{id}
+	</select>
+  		</mapper> 

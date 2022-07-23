@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>밴딩 회원가입</h1>
- <form action="/" class="frm" method="POST">
+ <!-- <form action="/" class="frm" method="POST"> -->
         <label for="input_id">아이디</label>
         <input type="text" id="input_id" name="userid" placeholder="아이디 입력">
         <button type="button" class="id_check">중복확인</button>
@@ -33,30 +33,36 @@
         <label for="SMSnum">인증 번호</label>
         <input type="text" id="SMSnum" name="sms" placeholder="인증 번호 입력">
         </div>
+        <label for="email">이메일</label>
+        <input type="text" id="email" name="email" placeholder="이메일 입력">
         <div>
         <input type="radio" name="gender" id="M"><label for="M">남성</label>
         <input type="radio" name="gender" id="F"><label for="F">여성</label>
         </div>
         <button type="button" class="sign_up">회원가입</button>
-        </form>
+        <!-- </form> -->
         <marquee scrollamount="20" behavior="alternate" width="200px">회원가입 해~</marquee>
         <a href="accFind">ID / 비밀번호 찾기</a>
 </body>
 <script type="text/javascript">
 
-/*     const inputId = $('input[name=userid]');
+     const inputId = $('input[name=userid]');
     const inpuPw = $('input[name=password]');
     const inputPwC = $('input[name=passwordC]');
     const inputName = $('input[name=userName]');
     const inputPhone = $('input[name=phone]');
     const inputSMSnum = $('input[name=sms]');
     const inputGender = $('input[name=gender]');
-     */
+     
     const inputSMS = $('.input_sms');
 	inputSMS.css("display","none");
 	
 
         $(".SMScertif").on("click", function(){
+        	if($("input[name=phone]").val() == ""){
+        		alert("전화번호를 입력해주세요");
+        		return false;
+        	}
             $.ajax({
             	type : "POST",
             	url : "smsCertif",
@@ -67,16 +73,69 @@
             })
             inputSMS.css("display","block");
         });
+
+        $(".id_check").on("click",function(){
+        	if($("input[name=userid]").val() == ""){
+        		alert("아이디를 입력해주세요")
+        		return false;
+        	}
+        	$.ajax({
+            	type : "POST",
+            	url : "idCheck",
+            	data : $("input[name=userid]").val(),
+            	success : function(res){
+            		if(res > 0){
+            			alert("이미 존재하는 아이디입니다.")
+            			$("input[name=userid]").val("");
+            			return false;
+            		}else{
+            			alert("사용가능한 아이디입니다.")
+            		}
+            	}
+            })
+        })
         
-    //회원가입 Validation
-/* $(".sign_up").on("click", function(){
-    if(inputId.val() == '') {alert("아이디를 입력해주세요"); return false}
-    if(inpuPw.val() != inputPwC.val()) {alert("비밀번호가 틀립니다."); return false}
-    if(inputName.val() == '') {alert("이름을 입력해주세요"); return false}
-    if(inputPhone.val() == '') {alert("핸드폰 번호를 입력해주세요"); return false}
-    if(inputSMSnum.val() == '') {alert("인증번호를 입력해주세요"); return false}
-    if(inputGender.val() == '' || inputGender.val() == null) {alert("성별을 입력해주세요"); return false}
-}) */
+        //회원가입 Validation
+        $(".sign_up").on("click", function(){
+            if(inputId.val() == '') {alert("아이디를 입력해주세요"); return false}
+            if(inpuPw.val() != inputPwC.val()) {alert("비밀번호가 틀립니다."); return false}
+            if(inputName.val() == '') {alert("이름을 입력해주세요"); return false}
+            if(inputPhone.val() == '') {alert("핸드폰 번호를 입력해주세요"); return false}
+            if(inputSMSnum.val() == '') {alert("인증번호를 입력해주세요"); return false}
+            if(inputGender.val() == '' || inputGender.val() == null) {alert("성별을 선택해주세요"); return false}
+            if(inputEmail.val() == ''){alert("이메일을 입력해주세요"); return false}
+            
+            const userinfo = {
+            		userLoginId : inputId.val(),
+            		passWord : inpuPw.val(),
+            		userName : inputName.val(),
+            		userEmail :inputEmail.val(),
+            		userPhone : inputPhone.val()
+            }
+            
+            $.ajax({
+            	type : "POST",
+            	url : "registUser",
+            	dataType : "text",
+            	contentType: "json/application",
+            	data : JSON.stringify(userinfo),
+            	success : function(res){
+            		if(res > 0){
+            			location.href="login";
+            		}else{
+            			alert('회원가입 실패.. 다시 시도해주세요')
+            			return false;
+            		}
+            		
+            	},
+            	fail : function(res){
+            		alert('회원가입 실패.. 다시 시도해주세요')
+        			return false;
+            	}
+            	
+            })
+            inputSMS.css("display","block");
+        }) 
 
 
 </script>

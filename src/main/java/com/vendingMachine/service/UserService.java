@@ -9,41 +9,47 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vendingMachine.Mapper.UserMapper;
 import com.vendingMachine.home.DTO.User;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 	
-	@Autowired
-	UserMapper dao;
+	private final UserMapper userDao;
 	
-	public UserService() {
-		System.out.println("UserService() 생성");
+	
+	
+	//중복아이디 체크
+	public int idCheck(String userId) {
+		int cnt = userDao.idCheck(userId);
+		return cnt;
 	}
 	
 	// 회원가입
 	// ROLE_MEMBER 권한 부여
 	@Transactional
 	public int addMember(User user) {
-		int cnt = dao.addUser(user);
-		dao.addAuth(user.getUserId(), "ROLE_MEMBER");
+		int cnt = userDao.addUser(user);
+		userDao.addAuth(user.getUserId(), "ROLE_MEMBER");
 		return cnt;
 	}
 	
 	// 회원삭제
 	@Transactional
 	public int deleteMember(User user) {
-		dao.deleteAuths(user.getUserId());  // 권한(들) 먼저 삭제
-		int cnt = dao.deleteUser(user);
+		userDao.deleteAuths(user.getUserId());  // 권한(들) 먼저 삭제
+		int cnt = userDao.deleteUser(user);
 		return cnt;
 	}
 	
 	// 특정 id(username) 의 정보 가져오기
 	public User findById(String id) {
-		return dao.findById(id);
+		return userDao.findById(id);
 	}
 	
 	// 특정 id 의 권한(들) 정보 가져오기
 	public List<String> selectAuthoritiesById(Long userId){
-		return dao.selectAuthoritiesById(userId);
+		return userDao.selectAuthoritiesById(userId);
 	}
 }
 

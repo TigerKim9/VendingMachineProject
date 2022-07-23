@@ -9,6 +9,9 @@ import com.vendingMachine.home.DTO.User;
 @Mapper
 public interface UserMapper {
 
+	//중복아이디 체크
+	int idCheck(String userId);
+	
 	// 사용자 추가
 	int addUser(User user);
 	
