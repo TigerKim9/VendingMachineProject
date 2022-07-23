@@ -2,12 +2,13 @@ package com.vendingMachine.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.vendingMachine.Mapper.UserMapper;
 import com.vendingMachine.home.DTO.User;
+import com.vendingMachine.home.DTO.WebClientBean;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserMapper userDao;
+	
 	
 	
 	
@@ -31,6 +33,8 @@ public class UserService {
 	public int addMember(User user) {
 		int cnt = userDao.addUser(user);
 		userDao.addAuth(user.getUserId(), "ROLE_MEMBER");
+		
+		
 		return cnt;
 	}
 	

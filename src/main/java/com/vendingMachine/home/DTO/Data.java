@@ -12,7 +12,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class Data {
 
-	private String id;
+//	private String id;
 	
 	private String email;
 	
