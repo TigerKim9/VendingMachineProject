@@ -38,6 +38,7 @@ public class VendingMachineApplication {
 					.queryParam("page", 1)
 					.build())
 					.retrieve().bodyToMono(WebClientBean.class);
+//			.retrieve().bodyToMono(String.class);
 			
 			respo.doOnSuccess(ra ->{
 				
