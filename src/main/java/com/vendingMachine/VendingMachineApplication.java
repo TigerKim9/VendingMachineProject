@@ -29,8 +29,6 @@ public class VendingMachineApplication {
 		
 		return args -> {
 			
-			StopWatch stopWatch = new StopWatch();
-			stopWatch.start();
 			
 			WebClient webClients = webClient.baseUrl("https://reqres.in/api/").build();
 		
@@ -45,7 +43,6 @@ public class VendingMachineApplication {
 					System.out.println("repo " + ra);
 			}).subscribe();
 			
-			stopWatch.stop();
 					
 		};
 	}
