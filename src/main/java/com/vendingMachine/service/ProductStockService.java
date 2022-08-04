@@ -18,12 +18,14 @@ public class ProductStockService {
 	
 	
 	//상품 재고 추가
+	//통계 로직 추가 예정 TODO
 	public int addProductStock(Product product) {
 		return productStockMapper.addProductStock(product);
 		
 	}
 	
 	//상품 판매시 재고 감소 + 매출금액 산정
+	//통계 로직 추가 예정 TODO
 	public int sellProductStock(ProductStock productStock) {
 		int result = productStockMapper.sellProductStock(productStock);
 		productStockMapper.increaseRevenue(productStock);

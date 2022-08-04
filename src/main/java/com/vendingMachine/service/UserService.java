@@ -16,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	
-	private final UserMapper userDao;
+	private final UserMapper userMapper;
 	
 	
 	
 	
 	//중복아이디 체크
 	public int idCheck(String userId) {
-		int cnt = userDao.idCheck(userId);
+		int cnt = userMapper.idCheck(userId);
 		return cnt;
 	}
 	
@@ -31,29 +31,27 @@ public class UserService {
 	// ROLE_MEMBER 권한 부여
 	@Transactional
 	public int addMember(User user) {
-		int cnt = userDao.addUser(user);
-		userDao.addAuth(user.getUserId(), "ROLE_MEMBER");
-		
-		
+		int cnt = userMapper.addUser(user);
+		userMapper.addAuth(user.getUserId(), "ROLE_MEMBER");
 		return cnt;
 	}
 	
 	// 회원삭제
 	@Transactional
 	public int deleteMember(User user) {
-		userDao.deleteAuths(user.getUserId());  // 권한(들) 먼저 삭제
-		int cnt = userDao.deleteUser(user);
+		userMapper.deleteAuths(user.getUserId());  // 권한(들) 먼저 삭제
+		int cnt = userMapper.deleteUser(user);
 		return cnt;
 	}
 	
 	// 특정 id(username) 의 정보 가져오기
 	public User findById(String id) {
-		return userDao.findById(id);
+		return userMapper.findById(id);
 	}
 	
 	// 특정 id 의 권한(들) 정보 가져오기
 	public List<String> selectAuthoritiesById(Long userId){
-		return userDao.selectAuthoritiesById(userId);
+		return userMapper.selectAuthoritiesById(userId);
 	}
 }
 
