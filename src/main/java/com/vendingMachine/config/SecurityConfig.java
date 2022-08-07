@@ -31,7 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.usernameParameter("userid")
 				.passwordParameter("userpassword")
 				.loginProcessingUrl("/loginOk")
-				.defaultSuccessUrl("/")   
+				.defaultSuccessUrl("/")
+				.and()
+				.rememberMe()
+				.key("secret")
+				.rememberMeParameter("autoLogin")
+				.tokenValiditySeconds(86400)
+				
+//				.userDetailsService()
+				.and()
+				.logout()
+				.logoutUrl("/logout")
+				.invalidateHttpSession(true)
+				
+				
 				
 				;
 		}
