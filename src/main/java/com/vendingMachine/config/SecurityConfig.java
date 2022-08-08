@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.rememberMeParameter("autoLogin")
 				.tokenValiditySeconds(86400)
 				
-//				.userDetailsService()
+				.userDetailsService()
 				.and()
 				.logout()
 				.logoutUrl("/logout")
