@@ -9,6 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vendingMachine.Mapper.HomeMapper;
 import com.vendingMachine.home.DTO.User;
 
+/*
+ * 1.회원가입
+ * 2.회원정보변경
+ * 3.문의하기
+ * 
+ */
+
+
 @Service
 public class HomeService {
 
@@ -40,6 +48,14 @@ public class HomeService {
 		}else {
 			return 0;
 		}
+		
+	}
+	
+	//문의하기
+	public int injury(Injury injury) {
+		
+		int result = homeMapper.injury(injury);
+		return result;
 		
 	}
 }
