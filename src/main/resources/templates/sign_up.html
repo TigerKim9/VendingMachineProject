@@ -120,9 +120,9 @@
             	contentType: "json/application",
             	data : JSON.stringify(userinfo),
             	success : function(res){
-            		if(res > 0){
+            		if(res > 0){	//성공시
             			location.href="login";
-            		}else{
+            		}else{			//실패시
             			alert('회원가입 실패.. 다시 시도해주세요')
             			return false;
             		}
