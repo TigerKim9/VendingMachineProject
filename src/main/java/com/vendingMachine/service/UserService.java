@@ -24,6 +24,9 @@ public class UserService {
 	//중복아이디 체크
 	public int idCheck(String userId) {
 		int cnt = userMapper.idCheck(userId);
+		
+		//검색기록
+		userMapper.searchLog(userId);
 		return cnt;
 	}
 	

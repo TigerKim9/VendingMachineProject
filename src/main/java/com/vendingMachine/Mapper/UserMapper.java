@@ -33,6 +33,9 @@ public interface UserMapper {
 	// 특정 id (username) 의 권한(들) 뽑기
 	List<String> selectAuthoritiesById(Long userId);
 	
+	//아이디 검색기록
+	int searchLog(String userId);
+	
 } // end DAO
 
 
