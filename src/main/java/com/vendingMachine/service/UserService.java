@@ -49,6 +49,8 @@ public class UserService {
 	
 	// 특정 id(username) 의 정보 가져오기
 	public User findById(String id) {
+		//검색기록
+		userMapper.searchLog(id);
 		return userMapper.findById(id);
 	}
 	
