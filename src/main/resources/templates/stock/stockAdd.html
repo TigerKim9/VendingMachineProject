@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>재고 추가</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 30px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #333; font-weight: bold; }
+        select, input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn { padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .button-group { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>재고 추가</h1>
+        <form id="stockForm">
+            <div class="form-group">
+                <label>상품 선택</label>
+                <select id="productId">
+                    <option value="">상품을 선택하세요</option>
+                    <option th:each="product : ${products}" th:value="${product.productId}" th:text="${product.productName}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>추가 수량</label>
+                <input type="number" id="quantity" min="1" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">추가</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/stock/manage'">취소</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        $('#stockForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/stock/add',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    productId: $('#productId').val(),
+                    productChangeQuantity: $('#quantity').val()
+                }),
+                success: function(response) {
+                    alert(response.message);
+                    if(response.success) location.href = '/stock/manage';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

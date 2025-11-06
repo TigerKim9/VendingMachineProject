@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>판매 내역</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 30px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>판매 내역</h1>
+        <button class="btn" onclick="location.href='/main'">메인으로</button>
+        <table>
+            <thead>
+                <tr><th>자판기 ID</th><th>상품 ID</th><th>판매 수량</th><th>판매 시간</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="sale : ${salesHistory}">
+                    <td th:text="${sale.vendingMachineId}"></td>
+                    <td th:text="${sale.productId}"></td>
+                    <td th:text="${sale.productQuantity}"></td>
+                    <td th:text="${#temporals.format(sale.quantityChangeTime, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

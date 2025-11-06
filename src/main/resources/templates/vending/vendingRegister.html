@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>자판기 등록</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 10px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .button-group { text-align: center; margin-top: 20px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>자판기 등록</h1>
+        <form id="vmForm">
+            <div class="form-group"><label>자판기 이름</label><input type="text" id="name" required></div>
+            <div class="form-group"><label>위치</label><input type="text" id="location" required></div>
+            <div class="form-group"><label>모델</label><input type="text" id="model" required></div>
+            <div class="form-group"><label>슬롯 수</label><input type="number" id="slot" required></div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/vending/list'">취소</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        $('#vmForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/vending/register',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    vendingMachineName: $('#name').val(),
+                    vendingMachineLocation: $('#location').val(),
+                    vendingMachineModel: $('#model').val(),
+                    vendingMachineSlot: $('#slot').val()
+                }),
+                success: function(r) { alert(r.message); if(r.success) location.href = '/vending/list'; }
+            });
+        });
+    </script>
+</body>
+</html>

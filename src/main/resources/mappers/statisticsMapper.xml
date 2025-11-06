@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.StatisticsMapper">
+
+	<!-- 일별 매출 통계 (최근 30일) -->
+	<select id="getDailySalesStatistics" resultType="com.vendingMachine.statistics.DTO.SalesStatistics">
+		SELECT
+			DATE_FORMAT(quantity_change_time, '%Y-%m-%d') as period,
+			COUNT(*) as totalSales,
+			SUM(product_quantity) as totalRevenue
+		FROM sell_product_history
+		WHERE quantity_change_time >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+		GROUP BY DATE_FORMAT(quantity_change_time, '%Y-%m-%d')
+		ORDER BY period DESC
+	</select>
+
+	<!-- 월별 매출 통계 (최근 12개월) -->
+	<select id="getMonthlySalesStatistics" resultType="com.vendingMachine.statistics.DTO.SalesStatistics">
+		SELECT
+			DATE_FORMAT(quantity_change_time, '%Y-%m') as period,
+			COUNT(*) as totalSales,
+			SUM(product_quantity) as totalRevenue
+		FROM sell_product_history
+		WHERE quantity_change_time >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+		GROUP BY DATE_FORMAT(quantity_change_time, '%Y-%m')
+		ORDER BY period DESC
+	</select>
+
+	<!-- 상품별 판매 통계 -->
+	<select id="getProductSalesStatistics" resultType="com.vendingMachine.statistics.DTO.SalesStatistics">
+		SELECT
+			sph.product_id as productId,
+			p.product_name as productName,
+			COUNT(*) as salesCount,
+			SUM(sph.product_quantity) as revenue
+		FROM sell_product_history sph
+		LEFT JOIN product p ON sph.product_id = p.product_id
+		GROUP BY sph.product_id, p.product_name
+		ORDER BY salesCount DESC
+	</select>
+
+	<!-- 자판기별 판매 통계 -->
+	<select id="getVendingMachineSalesStatistics" resultType="com.vendingMachine.statistics.DTO.SalesStatistics">
+		SELECT
+			sph.vending_machine_id as vendingMachineId,
+			vm.vending_machine_name as vendingMachineName,
+			COUNT(*) as vmSalesCount,
+			SUM(sph.product_quantity) as vmRevenue
+		FROM sell_product_history sph
+		LEFT JOIN vending_machine vm ON sph.vending_machine_id = vm.vending_machine_id
+		GROUP BY sph.vending_machine_id, vm.vending_machine_name
+		ORDER BY vmSalesCount DESC
+	</select>
+
+	<!-- 오늘의 매출 합계 -->
+	<select id="getTodayRevenue" resultType="Long">
+		SELECT COALESCE(SUM(product_quantity), 0)
+		FROM sell_product_history
+		WHERE DATE(quantity_change_time) = CURDATE()
+	</select>
+
+	<!-- 이번달 매출 합계 -->
+	<select id="getMonthRevenue" resultType="Long">
+		SELECT COALESCE(SUM(product_quantity), 0)
+		FROM sell_product_history
+		WHERE DATE_FORMAT(quantity_change_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+	</select>
+
+	<!-- 총 판매 수량 -->
+	<select id="getTotalSalesCount" resultType="Long">
+		SELECT COALESCE(COUNT(*), 0)
+		FROM sell_product_history
+	</select>
+
+</mapper>

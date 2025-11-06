@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.VendingMachineProductMapper">
+
+	<!-- 자판기에 상품 배치 -->
+	<insert id="placeProduct" parameterType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		INSERT INTO vending_machine_product(
+			vending_machine_id,
+			product_id,
+			slot_number,
+			current_stock,
+			max_stock,
+			min_stock_alert,
+			placement_date
+		)
+		VALUES(
+			#{vendingMachineId},
+			#{productId},
+			#{slotNumber},
+			#{currentStock},
+			#{maxStock},
+			#{minStockAlert},
+			NOW()
+		)
+	</insert>
+
+	<!-- 배치된 상품 수정 -->
+	<update id="updatePlacement" parameterType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		UPDATE vending_machine_product
+		SET
+			product_id = #{productId},
+			slot_number = #{slotNumber},
+			current_stock = #{currentStock},
+			max_stock = #{maxStock},
+			min_stock_alert = #{minStockAlert}
+		WHERE vm_product_id = #{vmProductId}
+	</update>
+
+	<!-- 배치된 상품 제거 -->
+	<delete id="removePlacement">
+		DELETE FROM vending_machine_product
+		WHERE vm_product_id = #{vmProductId}
+	</delete>
+
+	<!-- 자판기의 모든 배치 상품 조회 (상품 정보 포함) -->
+	<select id="getProductsByVendingMachine" resultType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		SELECT
+			vmp.vm_product_id vmProductId,
+			vmp.vending_machine_id vendingMachineId,
+			vmp.product_id productId,
+			vmp.slot_number slotNumber,
+			vmp.current_stock currentStock,
+			vmp.max_stock maxStock,
+			vmp.min_stock_alert minStockAlert,
+			vmp.placement_date placementDate,
+			p.product_name productName,
+			p.product_sell_price productSellPrice
+		FROM vending_machine_product vmp
+		LEFT JOIN product p ON vmp.product_id = p.product_id
+		WHERE vmp.vending_machine_id = #{vendingMachineId}
+		ORDER BY vmp.slot_number
+	</select>
+
+	<!-- 특정 배치 조회 -->
+	<select id="getPlacementById" resultType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		SELECT
+			vmp.vm_product_id vmProductId,
+			vmp.vending_machine_id vendingMachineId,
+			vmp.product_id productId,
+			vmp.slot_number slotNumber,
+			vmp.current_stock currentStock,
+			vmp.max_stock maxStock,
+			vmp.min_stock_alert minStockAlert,
+			vmp.placement_date placementDate,
+			p.product_name productName,
+			p.product_sell_price productSellPrice
+		FROM vending_machine_product vmp
+		LEFT JOIN product p ON vmp.product_id = p.product_id
+		WHERE vmp.vm_product_id = #{vmProductId}
+	</select>
+
+	<!-- 자판기의 특정 슬롯 조회 -->
+	<select id="getProductBySlot" resultType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		SELECT
+			vmp.vm_product_id vmProductId,
+			vmp.vending_machine_id vendingMachineId,
+			vmp.product_id productId,
+			vmp.slot_number slotNumber,
+			vmp.current_stock currentStock,
+			vmp.max_stock maxStock,
+			vmp.min_stock_alert minStockAlert,
+			vmp.placement_date placementDate,
+			p.product_name productName,
+			p.product_sell_price productSellPrice
+		FROM vending_machine_product vmp
+		LEFT JOIN product p ON vmp.product_id = p.product_id
+		WHERE vmp.vending_machine_id = #{param1}
+		  AND vmp.slot_number = #{param2}
+	</select>
+
+	<!-- 모든 배치 조회 -->
+	<select id="getAllPlacements" resultType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		SELECT
+			vmp.vm_product_id vmProductId,
+			vmp.vending_machine_id vendingMachineId,
+			vmp.product_id productId,
+			vmp.slot_number slotNumber,
+			vmp.current_stock currentStock,
+			vmp.max_stock maxStock,
+			vmp.min_stock_alert minStockAlert,
+			vmp.placement_date placementDate,
+			p.product_name productName,
+			p.product_sell_price productSellPrice,
+			vm.vending_machine_name vendingMachineName
+		FROM vending_machine_product vmp
+		LEFT JOIN product p ON vmp.product_id = p.product_id
+		LEFT JOIN vending_machine vm ON vmp.vending_machine_id = vm.vending_machine_id
+		ORDER BY vmp.vending_machine_id, vmp.slot_number
+	</select>
+
+	<!-- 재고 부족 알림 목록 -->
+	<select id="getLowStockProducts" resultType="com.vendingMachine.vendingMachines.VendingMachineProduct">
+		SELECT
+			vmp.vm_product_id vmProductId,
+			vmp.vending_machine_id vendingMachineId,
+			vmp.product_id productId,
+			vmp.slot_number slotNumber,
+			vmp.current_stock currentStock,
+			vmp.max_stock maxStock,
+			vmp.min_stock_alert minStockAlert,
+			vmp.placement_date placementDate,
+			p.product_name productName,
+			p.product_sell_price productSellPrice,
+			vm.vending_machine_name vendingMachineName
+		FROM vending_machine_product vmp
+		LEFT JOIN product p ON vmp.product_id = p.product_id
+		LEFT JOIN vending_machine vm ON vmp.vending_machine_id = vm.vending_machine_id
+		WHERE vmp.current_stock <= vmp.min_stock_alert
+		ORDER BY vmp.current_stock
+	</select>
+
+</mapper>

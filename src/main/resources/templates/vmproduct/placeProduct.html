@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 배치</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 10px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        select, input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn { padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .button-group { text-align: center; margin-top: 30px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>상품 배치</h1>
+        <form id="placeForm">
+            <div class="form-group">
+                <label>자판기 선택</label>
+                <select id="vendingMachineId" required>
+                    <option value="">자판기를 선택하세요</option>
+                    <option th:each="vm : ${vendingMachines}" th:value="${vm.vendingMachineId}" th:text="${vm.vendingMachineName} + ' - ' + ${vm.vendingMachineLocation}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>상품 선택</label>
+                <select id="productId" required>
+                    <option value="">상품을 선택하세요</option>
+                    <option th:each="product : ${products}" th:value="${product.productId}" th:text="${product.productName}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>슬롯 번호</label>
+                <input type="number" id="slotNumber" min="1" required>
+            </div>
+            <div class="form-group">
+                <label>현재 재고</label>
+                <input type="number" id="currentStock" min="0" required>
+            </div>
+            <div class="form-group">
+                <label>최대 재고</label>
+                <input type="number" id="maxStock" min="1" required>
+            </div>
+            <div class="form-group">
+                <label>최소 재고 알림 기준</label>
+                <input type="number" id="minStockAlert" min="0" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">배치</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/vmproduct/manage'">취소</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        $('#placeForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/vmproduct/place',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    vendingMachineId: $('#vendingMachineId').val(),
+                    productId: $('#productId').val(),
+                    slotNumber: $('#slotNumber').val(),
+                    currentStock: $('#currentStock').val(),
+                    maxStock: $('#maxStock').val(),
+                    minStockAlert: $('#minStockAlert').val()
+                }),
+                success: function(r) {
+                    alert(r.message);
+                    if(r.success) location.href = '/vmproduct/manage';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>문의하기</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 10px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; }
+        textarea { height: 200px; resize: vertical; }
+        .btn { padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .button-group { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>문의하기</h1>
+        <form action="/inquiry/submit" method="post">
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" name="title" required>
+            </div>
+            <div class="form-group">
+                <label>내용</label>
+                <textarea name="content" required></textarea>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">제출</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/main'">취소</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
