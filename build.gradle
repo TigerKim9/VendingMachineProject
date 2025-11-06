@@ -34,7 +34,11 @@ dependencies {
 	//QR코드 생성기
 	// https://mvnrepository.com/artifact/com.google.zxing/core
 	implementation 'com.google.zxing:core:3.5.0'
-	
+
+	// MQTT for IoT communication
+	implementation 'org.springframework.integration:spring-integration-mqtt:5.5.12'
+	implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+
 	
 	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
 	compileOnly 'org.projectlombok:lombok'
