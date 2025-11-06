@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>통계 대시보드</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #333; margin-bottom: 30px; text-align: center; }
+        h2 { color: #666; margin: 30px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #007bff; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .summary-card { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .summary-card h3 { color: #666; font-size: 14px; margin-bottom: 10px; }
+        .summary-card .value { font-size: 32px; font-weight: bold; color: #007bff; }
+        .stats-section { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; background-color: #007bff; color: white; text-decoration: none; display: inline-block; }
+        .top-bar { text-align: right; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <a href="/main" class="btn">메인으로</a>
+        </div>
+
+        <h1>📊 통계 대시보드</h1>
+
+        <!-- 요약 카드 -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>오늘의 매출</h3>
+                <div class="value" th:text="${#numbers.formatInteger(todayRevenue, 0, 'COMMA')} + '원'"></div>
+            </div>
+            <div class="summary-card">
+                <h3>이번달 매출</h3>
+                <div class="value" th:text="${#numbers.formatInteger(monthRevenue, 0, 'COMMA')} + '원'"></div>
+            </div>
+            <div class="summary-card">
+                <h3>총 판매 건수</h3>
+                <div class="value" th:text="${#numbers.formatInteger(totalSales, 0, 'COMMA')} + '건'"></div>
+            </div>
+        </div>
+
+        <!-- 상품별 판매 통계 -->
+        <div class="stats-section">
+            <h2>상품별 판매 통계</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>순위</th>
+                        <th>상품명</th>
+                        <th>판매 건수</th>
+                        <th>매출액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="stat, iterStat : ${productStats}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${stat.productName}"></td>
+                        <td th:text="${#numbers.formatInteger(stat.salesCount, 0, 'COMMA')} + '건'"></td>
+                        <td th:text="${#numbers.formatInteger(stat.revenue, 0, 'COMMA')} + '원'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 자판기별 판매 통계 -->
+        <div class="stats-section">
+            <h2>자판기별 판매 통계</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>순위</th>
+                        <th>자판기명</th>
+                        <th>판매 건수</th>
+                        <th>매출액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="stat, iterStat : ${vmStats}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${stat.vendingMachineName}"></td>
+                        <td th:text="${#numbers.formatInteger(stat.vmSalesCount, 0, 'COMMA')} + '건'"></td>
+                        <td th:text="${#numbers.formatInteger(stat.vmRevenue, 0, 'COMMA')} + '원'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 일별 판매 통계 -->
+        <div class="stats-section">
+            <h2>일별 판매 통계 (최근 30일)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>판매 건수</th>
+                        <th>매출액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="stat : ${dailyStats}">
+                        <td th:text="${stat.period}"></td>
+                        <td th:text="${#numbers.formatInteger(stat.totalSales, 0, 'COMMA')} + '건'"></td>
+                        <td th:text="${#numbers.formatInteger(stat.totalRevenue, 0, 'COMMA')} + '원'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 월별 판매 통계 -->
+        <div class="stats-section">
+            <h2>월별 판매 통계 (최근 12개월)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>월</th>
+                        <th>판매 건수</th>
+                        <th>매출액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="stat : ${monthlyStats}">
+                        <td th:text="${stat.period}"></td>
+                        <td th:text="${#numbers.formatInteger(stat.totalSales, 0, 'COMMA')} + '건'"></td>
+                        <td th:text="${#numbers.formatInteger(stat.totalRevenue, 0, 'COMMA')} + '원'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

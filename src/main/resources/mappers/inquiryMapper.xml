@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.InquiryMapper">
+	<insert id="addInquiry" parameterType="com.vendingMachine.inquiry.DTO.Inquiry">
+		INSERT INTO inquiry(user_id, title, content, status, created_date)
+		VALUES(#{userId}, #{title}, #{content}, '대기', NOW())
+	</insert>
+	<select id="getAllInquiries" resultType="com.vendingMachine.inquiry.DTO.Inquiry">
+		SELECT i.inquiry_id inquiryId, i.user_id userId, i.title, i.content,
+		       i.status, i.answer, i.created_date createdDate, i.answered_date answeredDate,
+		       u.mb_id userName
+		FROM inquiry i LEFT JOIN test_member u ON i.user_id = u.mb_uid
+		ORDER BY i.created_date DESC
+	</select>
+	<select id="getInquiriesByUser" resultType="com.vendingMachine.inquiry.DTO.Inquiry">
+		SELECT inquiry_id inquiryId, user_id userId, title, content, status, answer,
+		       created_date createdDate, answered_date answeredDate
+		FROM inquiry WHERE user_id = #{userId} ORDER BY created_date DESC
+	</select>
+	<select id="getInquiryById" resultType="com.vendingMachine.inquiry.DTO.Inquiry">
+		SELECT inquiry_id inquiryId, user_id userId, title, content, status, answer,
+		       created_date createdDate, answered_date answeredDate
+		FROM inquiry WHERE inquiry_id = #{inquiryId}
+	</select>
+	<update id="updateAnswer" parameterType="com.vendingMachine.inquiry.DTO.Inquiry">
+		UPDATE inquiry SET answer = #{answer}, status = '답변완료', answered_date = NOW()
+		WHERE inquiry_id = #{inquiryId}
+	</update>
+</mapper>

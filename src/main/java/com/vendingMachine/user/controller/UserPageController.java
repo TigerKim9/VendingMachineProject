@@ -22,4 +22,17 @@ public class UserPageController {
 		}
 		return "user/mypage";
 	}
+
+	@GetMapping("/edit")
+	public String editUserForm(@AuthenticationPrincipal PrincipalDetails principal, Model model) {
+		if (principal != null) {
+			model.addAttribute("user", homeService.myPage(principal.getUser().getUid()));
+		}
+		return "user/editUser";
+	}
+
+	@GetMapping("/changePassword")
+	public String changePasswordForm() {
+		return "user/changePassword";
+	}
 }

@@ -32,6 +32,8 @@
             <div class="info-value" th:text="${#temporals.format(user?.regdate, 'yyyy-MM-dd')}"></div>
         </div>
         <div class="button-group">
+            <button class="btn btn-primary" onclick="location.href='/user/edit'">정보 수정</button>
+            <button class="btn btn-primary" onclick="location.href='/user/changePassword'">비밀번호 변경</button>
             <button class="btn btn-primary" onclick="location.href='/main'">메인으로</button>
         </div>
     </div>
