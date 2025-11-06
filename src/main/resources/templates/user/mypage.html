@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 10px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .info-group { margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px; }
+        .info-label { font-weight: bold; color: #666; margin-bottom: 5px; }
+        .info-value { font-size: 16px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .button-group { text-align: center; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>마이페이지</h1>
+        <div class="info-group">
+            <div class="info-label">아이디</div>
+            <div class="info-value" th:text="${user?.id}"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">이메일</div>
+            <div class="info-value" th:text="${user?.email}"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">가입일</div>
+            <div class="info-value" th:text="${#temporals.format(user?.regdate, 'yyyy-MM-dd')}"></div>
+        </div>
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="location.href='/main'">메인으로</button>
+        </div>
+    </div>
+</body>
+</html>

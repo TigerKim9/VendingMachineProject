@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.SalesMapper">
+	<select id="getAllSalesHistory" resultType="com.vendingMachine.product.DTO.SellProductHistory">
+		SELECT vending_machine_id vendingMachineId, product_id productId,
+		       product_quantity productQuantity, quantity_change_time quantityChangeTime
+		FROM sell_product_history ORDER BY quantity_change_time DESC
+	</select>
+	<select id="getSalesHistoryByProduct" resultType="com.vendingMachine.product.DTO.SellProductHistory">
+		SELECT vending_machine_id vendingMachineId, product_id productId,
+		       product_quantity productQuantity, quantity_change_time quantityChangeTime
+		FROM sell_product_history WHERE product_id = #{productId} ORDER BY quantity_change_time DESC
+	</select>
+	<select id="getSalesHistoryByVendingMachine" resultType="com.vendingMachine.product.DTO.SellProductHistory">
+		SELECT vending_machine_id vendingMachineId, product_id productId,
+		       product_quantity productQuantity, quantity_change_time quantityChangeTime
+		FROM sell_product_history WHERE vending_machine_id = #{vendingMachineId} ORDER BY quantity_change_time DESC
+	</select>
+</mapper>

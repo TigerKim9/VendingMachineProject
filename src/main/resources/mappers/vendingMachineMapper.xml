@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.VendingMachineMapper">
+
+	<insert id="addVendingMachine" parameterType="com.vendingMachine.vendingMachines.VendingMachine">
+		INSERT INTO vending_machine(vending_machine_name, vending_machine_location, vending_machine_model, vending_machine_slot)
+		VALUES(#{vendingMachineName}, #{vendingMachineLocation}, #{vendingMachineModel}, #{vendingMachineSlot})
+	</insert>
+
+	<update id="updateVendingMachine" parameterType="com.vendingMachine.vendingMachines.VendingMachine">
+		UPDATE vending_machine
+		SET vending_machine_name = #{vendingMachineName},
+		    vending_machine_location = #{vendingMachineLocation},
+		    vending_machine_model = #{vendingMachineModel},
+		    vending_machine_slot = #{vendingMachineSlot}
+		WHERE vending_machine_id = #{vendingMachineId}
+	</update>
+
+	<delete id="deleteVendingMachine">
+		DELETE FROM vending_machine WHERE vending_machine_id = #{vendingMachineId}
+	</delete>
+
+	<select id="getVendingMachineById" resultType="com.vendingMachine.vendingMachines.VendingMachine">
+		SELECT vending_machine_id vendingMachineId, vending_machine_name vendingMachineName,
+		       vending_machine_location vendingMachineLocation, vending_machine_model vendingMachineModel,
+		       vending_machine_slot vendingMachineSlot
+		FROM vending_machine WHERE vending_machine_id = #{vendingMachineId}
+	</select>
+
+	<select id="getAllVendingMachines" resultType="com.vendingMachine.vendingMachines.VendingMachine">
+		SELECT vending_machine_id vendingMachineId, vending_machine_name vendingMachineName,
+		       vending_machine_location vendingMachineLocation, vending_machine_model vendingMachineModel,
+		       vending_machine_slot vendingMachineSlot
+		FROM vending_machine ORDER BY vending_machine_id
+	</select>
+
+	<select id="getVendingMachinesByLocation" resultType="com.vendingMachine.vendingMachines.VendingMachine">
+		SELECT vending_machine_id vendingMachineId, vending_machine_name vendingMachineName,
+		       vending_machine_location vendingMachineLocation, vending_machine_model vendingMachineModel,
+		       vending_machine_slot vendingMachineSlot
+		FROM vending_machine WHERE vending_machine_location LIKE CONCAT('%', #{location}, '%')
+	</select>
+
+</mapper>

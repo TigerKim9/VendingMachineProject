@@ -1,8 +1,11 @@
 package com.vendingMachine.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vendingMachine.Mapper.ProductStockMapper;
 import com.vendingMachine.product.DTO.Product;
@@ -14,28 +17,46 @@ public class ProductStockService {
 
 	@Resource
 	ProductStockMapper productStockMapper;
-	
-	
-	
+
+
+
 	//상품 재고 추가
 	//통계 로직 추가 예정 TODO
+	@Transactional
 	public int addProductStock(Product product) {
 		return productStockMapper.addProductStock(product);
-		
+
 	}
-	
+
 	//상품 판매시 재고 감소 + 매출금액 산정
 	//통계 로직 추가 예정 TODO
+	@Transactional
 	public int sellProductStock(ProductStock productStock) {
 		int result = productStockMapper.sellProductStock(productStock);
 		productStockMapper.increaseRevenue(productStock);
-		
+
 		return result;
 	}
-	
+
 
 	//상품 폐기시 재고 감소 + 총 상품금액 계산
+	@Transactional
 	public int disposalProductStock(long productId) {
 		return productStockMapper.disposalProductStock(productId);
+	}
+
+	//재고 변화 이력 전체 조회
+	public List<ProductStock> getAllStockHistory() {
+		return productStockMapper.getAllStockHistory();
+	}
+
+	//특정 상품 재고 변화 이력 조회
+	public List<ProductStock> getStockHistoryByProduct(Long productId) {
+		return productStockMapper.getStockHistoryByProduct(productId);
+	}
+
+	//현재 상품별 재고 조회
+	public ProductStock getCurrentStock(Long productId) {
+		return productStockMapper.getCurrentStock(productId);
 	}
 }

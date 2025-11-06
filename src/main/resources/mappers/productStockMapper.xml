@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vendingMachine.Mapper.ProductStockMapper">
+
+	<!-- 상품 재고 추가 -->
+	<insert id="addProductStock" parameterType="com.vendingMachine.product.DTO.Product">
+		INSERT INTO product_stock(
+			product_id,
+			product_change_quantity,
+			product_quantity,
+			quantity_change_time,
+			product_quantity_status
+		)
+		VALUES(
+			#{productId},
+			#{productChangeQuantity},
+			(SELECT COALESCE(SUM(product_change_quantity), 0) FROM product_stock WHERE product_id = #{productId}) + #{productChangeQuantity},
+			NOW(),
+			0
+		)
+	</insert>
+
+	<!-- 상품 판매시 재고 감소 -->
+	<insert id="sellProductStock" parameterType="com.vendingMachine.product.DTO.ProductStock">
+		INSERT INTO product_stock(
+			product_id,
+			product_change_quantity,
+			product_quantity,
+			quantity_change_time,
+			product_quantity_status
+		)
+		VALUES(
+			#{productId},
+			-#{productChangeQuantity},
+			(SELECT COALESCE(SUM(product_change_quantity), 0) FROM product_stock WHERE product_id = #{productId}) - #{productChangeQuantity},
+			NOW(),
+			1
+		)
+	</insert>
+
+	<!-- 상품 폐기시 재고 감소 -->
+	<insert id="disposalProductStock">
+		INSERT INTO product_stock(
+			product_id,
+			product_change_quantity,
+			product_quantity,
+			quantity_change_time,
+			product_quantity_status
+		)
+		VALUES(
+			#{productId},
+			-1,
+			(SELECT COALESCE(SUM(product_change_quantity), 0) FROM product_stock WHERE product_id = #{productId}) - 1,
+			NOW(),
+			2
+		)
+	</insert>
+
+	<!-- 매출 증가 (판매 기록) -->
+	<insert id="increaseRevenue" parameterType="com.vendingMachine.product.DTO.ProductStock">
+		INSERT INTO sell_product_history(
+			vending_machine_id,
+			product_id,
+			product_quantity,
+			quantity_change_time
+		)
+		VALUES(
+			1,
+			#{productId},
+			#{productChangeQuantity},
+			NOW()
+		)
+	</insert>
+
+	<!-- 재고 변화 이력 전체 조회 -->
+	<select id="getAllStockHistory" resultType="com.vendingMachine.product.DTO.ProductStock">
+		SELECT
+			product_id productId,
+			product_change_quantity productChangeQuantity,
+			product_quantity productQuantity,
+			quantity_change_time quantityChangeTime,
+			product_quantity_status productQuantityStatus
+		FROM product_stock
+		ORDER BY quantity_change_time DESC
+	</select>
+
+	<!-- 특정 상품 재고 변화 이력 조회 -->
+	<select id="getStockHistoryByProduct" resultType="com.vendingMachine.product.DTO.ProductStock">
+		SELECT
+			product_id productId,
+			product_change_quantity productChangeQuantity,
+			product_quantity productQuantity,
+			quantity_change_time quantityChangeTime,
+			product_quantity_status productQuantityStatus
+		FROM product_stock
+		WHERE product_id = #{productId}
+		ORDER BY quantity_change_time DESC
+	</select>
+
+	<!-- 현재 상품별 재고 조회 -->
+	<select id="getCurrentStock" resultType="com.vendingMachine.product.DTO.ProductStock">
+		SELECT
+			product_id productId,
+			SUM(product_change_quantity) productQuantity
+		FROM product_stock
+		WHERE product_id = #{productId}
+		GROUP BY product_id
+	</select>
+
+</mapper>
